@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchThreads, addThread, setFilter } from '../../store/actions/forumActions';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import '../../index.css';
 
 const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setFilter }) => {
   const [newThread, setNewThread] = useState('');
-  const [selectedThread, setSelectedThread] = useState(null); // State untuk menyimpan data detail thread
+  const [categories, setCategories] = useState([]);
+  const [selectedThread, setSelectedThread] = useState(null);
 
   useEffect(() => {
     fetchThreads();
+    fetchCategories();
   }, [fetchThreads]);
 
   const handleThreadSubmit = async () => {
@@ -19,6 +22,15 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
       setNewThread('');
     } catch (error) {
       console.error('Failed to create thread:', error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('https://forum-api.dicoding.dev/v1/categories');
+      setCategories(response.data.data.categories.map((category) => category.name));
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
     }
   };
 
@@ -44,14 +56,18 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
       </div>
       <div className="filter-buttons">
         <button onClick={() => handleFilter('')} className={`filter-button ${filter === '' ? 'active' : ''}`}>All</button>
-        <button onClick={() => handleFilter('Technology')} className={`filter-button ${filter === 'Technology' ? 'active' : ''}`}>Technology</button>
-        <button onClick={() => handleFilter('Lifestyle')} className={`filter-button ${filter === 'Lifestyle' ? 'active' : ''}`}>Lifestyle</button>
-        <button onClick={() => handleFilter('Food')} className={`filter-button ${filter === 'Food' ? 'active' : ''}`}>Food</button>
+        {categories.map((category) => (
+          <button key={category} onClick={() => handleFilter(category)} className={`filter-button ${filter === category ? 'active' : ''}`}>
+            {category}
+          </button>
+        ))}
       </div>
       <div>
         {filteredThreads.map((thread) => (
           <div key={thread.id}>
-            <h3 onClick={() => handleThreadClick(thread.id)}>{thread.title}</h3>
+            <Link to={`/thread/${thread.id}`}>
+              <h3>{thread.title}</h3>
+            </Link>
           </div>
         ))}
       </div>
@@ -59,6 +75,13 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
         <div>
           <h3>{selectedThread.title}</h3>
           <p>{selectedThread.body}</p>
+          <p>Category: {selectedThread.category}</p>
+          <p>Created By: {selectedThread.creator.name}</p>
+          <p>Created At: {new Date(selectedThread.createdAt).toLocaleString()}</p>
+          <p>Likes: {selectedThread.upVotesBy.length}</p>
+          <p>Dislikes: {selectedThread.downVotesBy.length}</p>
+          <p>Shares: {selectedThread.shared}</p>
+          <p>Comments: {selectedThread.comments.length}</p>
           {/* render komponen */}
         </div>
       )}

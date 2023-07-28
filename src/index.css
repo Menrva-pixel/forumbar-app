@@ -146,3 +146,77 @@ code {
   background-color: #007bff;
   color: #fff;
 }
+
+/*--------------- Halaman Detail Thread --------------*/
+.detail-thread-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.thread-details {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.thread-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.thread-body {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.thread-info {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.thread-author {
+  font-size: 14px;
+  color: #666;
+}
+
+.thread-date {
+  font-size: 14px;
+  color: #666;
+}
+
+.thread-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.comments {
+  margin-top: 24px;
+}
+
+.comment {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.comment-content {
+  font-size: 16px;
+}
+
+.comment-info {
+  font-size: 14px;
+  color: #666;
+}
+
+.comment-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
