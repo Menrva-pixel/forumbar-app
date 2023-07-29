@@ -7,6 +7,7 @@ import Login from './components/auth/login';
 import Register from './components/auth/register';
 import Forum from './components/forum/forum';
 import DetailThread from './components/forum/detailThread';
+import Leaderboard from './components/leaderboard';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/thread/:threadId" element={<DetailThread />} />
+            <Route path="/leaderboard" component={Leaderboard} />
           </Routes>
         </div>
       </Router>

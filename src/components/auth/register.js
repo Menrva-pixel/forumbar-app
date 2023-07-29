@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { register } from '../../store/actions/authActions';
 import logo from '../../images/logo.png'; 
 
 const Register = ({ register }) => {
@@ -7,7 +8,11 @@ const Register = ({ register }) => {
   const [password, setPassword] = useState('');
 
   const handleRegister = () => {
-    register(email, password);
+    const userData = {
+      email: email,
+      password: password
+    };
+    register(userData);
   };
 
   return (
@@ -35,4 +40,4 @@ const Register = ({ register }) => {
   );
 };
 
-export default connect(null, { Register }) (Register);
+export default connect(null, { register })(Register);

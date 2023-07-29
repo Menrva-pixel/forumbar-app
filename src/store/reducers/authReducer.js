@@ -1,24 +1,28 @@
 import {
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE,
-} from '../actions/authActions'; 
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+} from '../actions/authActions';
 
 const initialState = {
-  users: [], 
+  user: null,
   loading: false,
   error: null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_USERS_SUCCESS:
+    case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       return {
         ...state,
-        users: action.payload,
+        user: action.payload,
         loading: false,
         error: null,
       };
-    case FETCH_USERS_FAILURE:
+    case REGISTER_FAILURE:
+    case LOGIN_FAILURE:
       return {
         ...state,
         loading: false,
