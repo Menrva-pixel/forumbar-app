@@ -1,13 +1,9 @@
 import axios from 'axios';
-
-const API_URL = 'https://forum-api.dicoding.dev/v1';
+import Swal from 'sweetalert2';
 
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-// Actions
 export const registerSuccess = (user) => ({
   type: REGISTER_SUCCESS,
   payload: user,
@@ -17,6 +13,34 @@ export const registerFailure = (error) => ({
   type: REGISTER_FAILURE,
   payload: error,
 });
+
+export const registerUser = (name, email, password) => async (dispatch) => {
+  try {
+    const response = await axios.post('https://forum-api.dicoding.dev/v1/register', {
+      name,
+      email,
+      password,
+    });
+    dispatch(registerSuccess(response.data.data.user));
+    Swal.fire({
+      icon: 'success',
+      title: 'Registration Success',
+      text: 'You have successfully registered.',
+    });
+  } catch (error) {
+    dispatch(registerFailure(error.message));
+    Swal.fire({
+      icon: 'error',
+      title: 'Registration Failed',
+      text: error.message,
+    });
+  }
+};
+
+// Login user action
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
 
 export const loginSuccess = (token) => ({
   type: LOGIN_SUCCESS,
@@ -28,25 +52,31 @@ export const loginFailure = (error) => ({
   payload: error,
 });
 
-// Thunk to register user
-export const register = (userData) => async (dispatch) => {
-  try {
-    const response = await axios.post(`${API_URL}/register`, userData);
-    dispatch(registerSuccess(response.data.data.user));
-  } catch (error) {
-    dispatch(registerFailure(error.message));
-  }
-};
+export const logout = () => ({
+  type: LOGOUT,
+});
 
-// Thunk to login user
-export const login = (email, password) => async (dispatch) => {
+export const loginUser = (email, password) => async (dispatch) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, {
-      email: email,
-      password: password,
+    const response = await axios.post('https://forum-api.dicoding.dev/v1/login', {
+      email,
+      password,
     });
-    dispatch(loginSuccess(response.data.data.token));
+    const { token } = response.data.data;
+    dispatch(loginSuccess(token));
+    
+    localStorage.setItem('userToken', token);
+    Swal.fire({
+      icon: 'success',
+      title: 'Login Success',
+      text: 'You have successfully logged in.',
+    });
   } catch (error) {
     dispatch(loginFailure(error.message));
+    Swal.fire({
+      icon: 'error',
+      title: 'Login Failed',
+      text: error.message,
+    });
   }
 };

@@ -1,48 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import '../index.css';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { fetchUsers } from '../store/actions/leaderboardActions';
 
-const Leaderboard = () => {
-  const [leaderboardData, setLeaderboardData] = useState([]);
-
+const Leaderboard = ({ leaderboards, fetchUsers }) => {
   useEffect(() => {
-    fetchLeaderboardData();
-  }, []);
-
-  const fetchLeaderboardData = async () => {
-    try {
-      const response = await axios.get('https://forum-api.dicoding.dev/v1/leaderboard');
-      setLeaderboardData(response.data.data.leaderboards); // <-- Update this line to access "leaderboards" instead of "leaderboard"
-    } catch (error) {
-      console.error('Failed to fetch leaderboard data:', error);
-    }
-  };
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
-    <div className="container">
-      <h2 className="title">Leaderboard</h2>
-      <div className="leaderboard-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Name</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboardData.map((entry, index) => (
-              <tr key={entry.user.id}>
-                <td>{index + 1}</td>
-                <td>{entry.user.name}</td>
-                <td>{entry.score}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div>
+      <h2>Leaderboard</h2>
+      {leaderboards.length > 0 ? (
+        <ul>
+          {leaderboards.map((user) => (
+            <li key={user.user.id}>
+              {user.user.name} - Score: {user.score}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No data available.</p>
+      )}
     </div>
   );
 };
 
-export default Leaderboard;
+const mapStateToProps = (state) => ({
+  leaderboards: state.leaderboard.leaderboards,
+});
+
+export default connect(mapStateToProps, { fetchUsers })(Leaderboard);

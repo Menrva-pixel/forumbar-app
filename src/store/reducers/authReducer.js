@@ -1,32 +1,46 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAILURE,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-} from '../actions/authActions';
+import { REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../actions/authActions';
 
 const initialState = {
+  isLoggedIn: false,
   user: null,
-  loading: false,
+  token: null,
   error: null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
-    case LOGIN_SUCCESS:
       return {
         ...state,
         user: action.payload,
-        loading: false,
         error: null,
       };
     case REGISTER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: action.payload,
+        token: action.payload,
+        error: null,
+      };
     case LOGIN_FAILURE:
       return {
         ...state,
-        loading: false,
+        isLoggedIn: false,
+        token: null,
         error: action.payload,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
+        token: null,
       };
     default:
       return state;

@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { login } from '../../store/actions/authActions';
-import logo from '../../images/logo.png'; 
+import { loginUser } from '../../store/actions/authActions';
+import logo from '../../images/logo.png';
+import Swal from 'sweetalert2';
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = ({ loginUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    const userData = {
-      email: email,
-      password: password
-    };
-    login(userData);
+  const handleLogin = async () => {
+    try {
+      await loginUser(email, password);
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Success',
+        text: 'You have successfully logged in.',
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: error.message,
+      });
+    }
   };
 
   return (
@@ -36,13 +46,8 @@ const Login = ({ login, isAuthenticated }) => {
       <button onClick={handleLogin} className="button">
         Login
       </button>
-      {isAuthenticated && <p>You are logged in!</p>}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.user !== null,
-});
-
-export default connect(mapStateToProps, { login })(Login);
+export default connect(null, { loginUser })(Login);

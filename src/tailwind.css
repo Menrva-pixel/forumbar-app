@@ -1,3 +1,19 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.landing-page {
+  min-height: 100vh;
+}
+
+.hero {
+  background-image: url('/src/images/banner.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 50vh;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+}

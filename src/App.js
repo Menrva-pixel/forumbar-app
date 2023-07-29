@@ -8,6 +8,7 @@ import Register from './components/auth/register';
 import Forum from './components/forum/forum';
 import DetailThread from './components/forum/detailThread';
 import Leaderboard from './components/leaderboard';
+import LandingPage from './components/landingpage';
 
 const App = () => {
   return (
@@ -16,7 +17,8 @@ const App = () => {
         <Navbar />
         <div className="app-container">
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/thread/:threadId" element={<DetailThread />} />
