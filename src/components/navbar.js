@@ -9,7 +9,6 @@ const Navbar = ({ isAuthenticated, user, logoutUser }) => {
 
   const handleLogout = () => {
     logoutUser();
-    
     navigate("/");
   };
 
@@ -17,28 +16,28 @@ const Navbar = ({ isAuthenticated, user, logoutUser }) => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-left">
-          <Link to="/" className="navbar-logo"><img src={logo}></img></Link>
+          <Link to="/" className="navbar-logo"><img src={logo} alt="Logo" /></Link>
         </div>
         <ul className="navbar-menu">
           {isAuthenticated && user ? (
             <>
               <li className="navbar-item">
-                <Link to={`/profile/${user.id}`} className="navbar-link">Hello, {user.name}</Link>
+                <Link to={`/profile/${user.id}`} className="navbar-link">Profile {user.name}</Link>
               </li>
-              <li className="nav-item">
-                <Link to="/forum" className="nav-links">
+              <li className="navbar-item">
+                <Link to="/forum" className="navbar-link">
                   Forum
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to="/leaderboard" className="nav-links">
+              <li className="navbar-item">
+                <Link to="/leaderboard" className="navbar-link">
                   Leaderboard
                 </Link>
               </li>
-              <li className="nav-item">
-                <button className="navbar-link" onClick={handleLogout}>
+              <li className="navbar-item">
+                <a href="#" className="navbar-button" onClick={handleLogout}>
                   Logout
-                </button>
+                </a>
               </li>
             </>
           ) : (
@@ -62,7 +61,7 @@ const Navbar = ({ isAuthenticated, user, logoutUser }) => {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.token !== null,
-  user: state.auth.user, 
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, { logoutUser })(Navbar);

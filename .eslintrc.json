@@ -18,6 +18,7 @@
         "no-case-declarations":"off",
         "no-unused-vars":"off",
         "react/prop-types":"off",
-        "react-in-jax-scope":"off"
+        "react-in-jax-scope":"off",
+        "no-undef":"off"
     }
 }

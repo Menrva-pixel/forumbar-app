@@ -17,11 +17,11 @@ const App = () => {
         <Navbar />
         <div className="app-container">
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/thread/:threadId" element={<DetailThread />} />
+            <Route path="/" element={<LandingPage/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/forum" element={<Forum/>} />
+            <Route path="/thread/:threadId" element={<DetailThread/>} />
             <Route path="/leaderboard" component={Leaderboard} />
           </Routes>
         </div>
@@ -29,6 +29,18 @@ const App = () => {
     </Provider>
   );
 };
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      console.log('Service Worker registered: ', registration);
+    }).catch((error) => {
+      console.error('Service Worker registration failed: ', error);
+    });
+  });
+}
+
+
 
 
 export default App;

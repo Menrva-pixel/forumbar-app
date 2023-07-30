@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import '../index.css';
 import infoImg from '../images/react-logo.png';
 import discussion from '../images/Discussion.png';
@@ -23,7 +24,7 @@ const InfoSection = () => {
   );
 };
 
-const LandingPage = () => {
+const LandingPage = ({ isAuthenticated }) => {
   useEffect(() => {
     const handleParallax = () => {
       const infoSection = document.querySelector('.info-section');
@@ -44,12 +45,16 @@ const LandingPage = () => {
         <h1 className="hero-title">Hi Coders! Welcome to ForumBar</h1>
         <p className="hero-description">Join the community and start discussing interesting topics!</p>
         <div className="cta-buttons">
+        {!isAuthenticated && (
+          <>
           <Link to="/register" className="cta-button cta-button-register">
             Register
           </Link>
           <Link to="/login" className="cta-button cta-button-login">
             Login
           </Link>
+          </>
+        )}
         </div>
       </header>
       <InfoSection />
@@ -87,4 +92,8 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.token !== null,
+});
+
+export default connect(mapStateToProps)(LandingPage);
