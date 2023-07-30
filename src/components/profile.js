@@ -16,7 +16,7 @@ const Profile = () => {
       },
     };
 
-    axios.get('https://example-api.com/users/me', config)
+    axios.get('https://forum-api.dicoding.dev/v1/users/me', config)
       .then((response) => {
         setUserData(response.data.data.user);
       })
