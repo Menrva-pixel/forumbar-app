@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../store/actions/authActions';
+import { fetchUsers } from '../store/actions/leaderboardActions';
 
-const Leaderboard = ({ users, fetchUsers }) => {
+const Leaderboard = ({ leaderboards, fetchUsers }) => {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
@@ -10,21 +10,23 @@ const Leaderboard = ({ users, fetchUsers }) => {
   return (
     <div>
       <h2>Leaderboard</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <img src={user.avatar} alt={`Avatar ${user.name}`} />
-            <span>{user.name}</span>
-            <span>Score: {user.score}</span>
-          </li>
-        ))}
-      </ul>
+      {leaderboards.length > 0 ? (
+        <ul>
+          {leaderboards.map((user) => (
+            <li key={user.user.id}>
+              {user.user.name} - Score: {user.score}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No data available.</p>
+      )}
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  users: state.auth.users,
+  leaderboards: state.leaderboard.leaderboards,
 });
 
 export default connect(mapStateToProps, { fetchUsers })(Leaderboard);

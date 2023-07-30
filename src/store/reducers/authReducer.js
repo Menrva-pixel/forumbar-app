@@ -1,28 +1,44 @@
-import {
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE,
-} from '../actions/authActions'; 
+import { REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../actions/authActions';
 
 const initialState = {
-  users: [], 
-  loading: false,
+  isLoggedIn: false,
+  user: null, // Pastikan initialState memiliki properti 'user'
+  token: null,
   error: null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_USERS_SUCCESS:
+    case REGISTER_SUCCESS:
       return {
         ...state,
-        users: action.payload,
-        loading: false,
+        user: action.payload,
         error: null,
       };
-    case FETCH_USERS_FAILURE:
+    case REGISTER_FAILURE:
       return {
         ...state,
-        loading: false,
         error: action.payload,
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: action.payload, // Pastikan menyimpan data user pada state
+        token: action.payload,
+        error: null,
+      };
+    case LOGIN_FAILURE:
+      return {
+        ...state,
+        token: null,
+        error: action.payload,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: null,
       };
     default:
       return state;

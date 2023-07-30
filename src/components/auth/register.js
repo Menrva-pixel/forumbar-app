@@ -1,19 +1,52 @@
 import React, { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import logo from '../../images/logo.png'; 
+import { registerUser } from '../../store/actions/authActions';
+import logo from '../../images/logo.png';
+import Swal from 'sweetalert2';
 
-const Register = ({ register }) => {
+const Register = ({ isAuthenticated, registerUser }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRegistered, setIsRegistered] = useState(false);
 
-  const handleRegister = () => {
-    register(email, password);
+  const handleRegister = async () => {
+    try {
+      await registerUser(name, email, password);
+      setIsRegistered(true);
+      // Tampilkan SweetAlert2 ketika registrasi berhasil
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Success',
+        text: 'You have successfully registered.',
+      });
+    } catch (error) {
+      // Tampilkan SweetAlert2 ketika registrasi gagal
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Failed',
+        text: error.message,
+      });
+    }
   };
+
+  if (isAuthenticated) {
+    // If the user is already authenticated, redirect to the homepage
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="container">
       <img src={logo} alt="Logo" className="logo" />
       <h2 className="title">Register</h2>
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="input"
+      />
       <input
         type="text"
         placeholder="Email"
@@ -31,8 +64,15 @@ const Register = ({ register }) => {
       <button onClick={handleRegister} className="button">
         Register
       </button>
+      <p className="link">
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 };
 
-export default connect(null, { Register }) (Register);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.token !== null,
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);

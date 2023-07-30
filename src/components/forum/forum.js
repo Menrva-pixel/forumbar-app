@@ -5,10 +5,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../../index.css';
 
-const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setFilter }) => {
+const Forum = ({ isAuthenticated, threads, filteredThreads, filter, fetchThreads, addThread, setFilter }) => {
   const [newThread, setNewThread] = useState('');
-  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState([]);
   const [selectedThread, setSelectedThread] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [newThreadTitle, setNewThreadTitle] = useState('');
+  const [newThreadCategory, setNewThreadCategory] = useState('');
+  const [newThreadBody, setNewThreadBody] = useState('');
 
   useEffect(() => {
     fetchThreads();
@@ -27,10 +31,10 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('https://forum-api.dicoding.dev/v1/categories');
-      setCategories(response.data.data.categories.map((category) => category.name));
+      const response = await axios.get('https://forum-api.dicoding.dev/v1/category');
+      setCategory(response.data.data.category.map((category) => category.name));
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+      console.error('Failed to fetch category:', error);
     }
   };
 
@@ -47,17 +51,50 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
     }
   };
 
+  const handleCreateThread = () => {
+    if (!newThreadTitle || !newThreadCategory || !newThreadBody) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const createThread = async () => {
+      try {
+        const response = await axios.post('https://forum-api.dicoding.dev/v1/threads', {
+          title: newThreadTitle,
+          category: newThreadCategory,
+          body: newThreadBody,
+        });
+        addThread(response.data.data.thread);
+        setShowModal(false);
+        setNewThreadTitle('');
+        setNewThreadCategory('');
+        setNewThreadBody('');
+      } catch (error) {
+        console.error('Failed to create thread:', error);
+      }
+    };
+
+    createThread();
+  };
+
   return (
     <div className="container">
       <h2 className="title">Forum</h2>
       <div>
-        <input type="text" value={newThread} onChange={(e) => setNewThread(e.target.value)} className="input" />
-        <button onClick={handleThreadSubmit} className="button">Create Thread</button>
+        <button onClick={() => setShowModal(true)} className="button">
+          Create Thread
+        </button>
       </div>
       <div className="filter-buttons">
-        <button onClick={() => handleFilter('')} className={`filter-button ${filter === '' ? 'active' : ''}`}>All</button>
-        {categories.map((category) => (
-          <button key={category} onClick={() => handleFilter(category)} className={`filter-button ${filter === category ? 'active' : ''}`}>
+        <button onClick={() => handleFilter('')} className={`filter-button ${filter === '' ? 'active' : ''}`}>
+          All
+        </button>
+        {category.map((category) => (
+          <button
+            key={category}
+            onClick={() => handleFilter(category)}
+            className={`filter-button ${filter === category ? 'active' : ''}`}
+          >
             {category}
           </button>
         ))}
@@ -82,7 +119,44 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
           <p>Dislikes: {selectedThread.downVotesBy.length}</p>
           <p>Shares: {selectedThread.shared}</p>
           <p>Comments: {selectedThread.comments.length}</p>
-          {/* render komponen */}
+        </div>
+      )}
+
+      {/* Modal untuk membuat thread baru */}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Create New Thread</h2>
+            <input
+              type="text"
+              placeholder="Title"
+              value={newThreadTitle}
+              onChange={(e) => setNewThreadTitle(e.target.value)}
+              className="input"
+            />
+            <input
+              type="text"
+              placeholder="Category"
+              value={newThreadCategory}
+              onChange={(e) => setNewThreadCategory(e.target.value)}
+              className="input"
+            />
+            <textarea
+              placeholder="Content"
+              value={newThreadBody}
+              onChange={(e) => setNewThreadBody(e.target.value)}
+              className="input"
+              rows="6"
+            ></textarea>
+            <div className="modal-buttons">
+              <button onClick={handleCreateThread} className="button">
+                Create
+              </button>
+              <button onClick={() => setShowModal(false)} className="button cancel">
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -90,6 +164,7 @@ const Forum = ({ threads, filteredThreads, filter, fetchThreads, addThread, setF
 };
 
 const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.token !== null,
   threads: state.forum.threads,
   filteredThreads: state.forum.filteredThreads,
   filter: state.forum.filter,
