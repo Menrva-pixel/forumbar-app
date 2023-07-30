@@ -18,7 +18,7 @@ const DetailThread = ({ isAuthenticated }) => {
       if (!isLiked) {
         await axios.post(`https://forum-api.dicoding.dev/v1/threads/${threadId}/up-vote`, null, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+            Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
           },
         });
         setIsLiked(true);
@@ -36,7 +36,7 @@ const DetailThread = ({ isAuthenticated }) => {
       if (!isDisliked) {
         await axios.post(`https://forum-api.dicoding.dev/v1/threads/${threadId}/down-vote`, null, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+            Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
           },
         });
         setIsDisliked(true);
@@ -50,8 +50,8 @@ const DetailThread = ({ isAuthenticated }) => {
   };
 
   const handleComment = async () => {
-    // Implement your comment functionality here
-    // You can show a modal or a form to let the user input the comment and send it to the API
+    
+
   };
 
   const handleActionClick = (actionType) => {
@@ -68,7 +68,6 @@ const DetailThread = ({ isAuthenticated }) => {
         handleDislike();
         break;
       case 'share':
-        // Implement your share functionality here
         break;
       default:
         break;
@@ -104,7 +103,7 @@ const DetailThread = ({ isAuthenticated }) => {
       {thread ? (
         <div className="thread-details">
           <h2 className="thread-title">{thread.title}</h2>
-          <p className="thread-body">{thread.body}</p>
+          <div dangerouslySetInnerHTML={{ __html: thread.body }} />
           <div className="thread-info">
             <p className="thread-author">Posted by: {thread.owner.name}</p>
             <p className="thread-date">Date: {new Date(thread.createdAt).toLocaleString()}</p>

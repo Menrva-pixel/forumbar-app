@@ -4,6 +4,7 @@ import { fetchThreads, addThread, setFilter } from '../../store/actions/forumAct
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../../index.css';
+import '../../components/css/forum.css'
 
 const Forum = ({ isAuthenticated, threads, filteredThreads, filter, fetchThreads, addThread, setFilter }) => {
   const [newThread, setNewThread] = useState('');
@@ -99,15 +100,19 @@ const Forum = ({ isAuthenticated, threads, filteredThreads, filter, fetchThreads
           </button>
         ))}
       </div>
-      <div>
+    
+      <div className="thread-list">
         {filteredThreads.map((thread) => (
-          <div key={thread.id}>
+          <div key={thread.id} className="thread-item">
             <Link to={`/thread/${thread.id}`}>
               <h3>{thread.title}</h3>
             </Link>
+            {thread.body && <p>{thread.body.slice(0, 100)}...</p>}
+            <p>Created At: {new Date(thread.createdAt).toLocaleString()}</p>
           </div>
         ))}
       </div>
+
       {selectedThread && (
         <div>
           <h3>{selectedThread.title}</h3>

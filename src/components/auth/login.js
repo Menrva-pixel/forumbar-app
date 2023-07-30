@@ -11,8 +11,7 @@ const Login = ({ isAuthenticated, loginUser }) => {
   const handleLogin = async () => {
     try {
       const token = await loginUser(email, password);
-      // Simpan token di local storage setelah login berhasil
-      localStorage.setItem('userToken', token);
+      sessionStorage.setItem('userToken', token);
       Swal.fire({
         icon: 'success',
         title: 'Login Success',
@@ -29,7 +28,7 @@ const Login = ({ isAuthenticated, loginUser }) => {
 
 
   return (
-    <div className="container">
+    <div className="login-container">
       <img src={logo} alt="Logo" className="logo" />
       <h2 className="title">Login</h2>
       <input

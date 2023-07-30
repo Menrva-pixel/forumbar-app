@@ -17,11 +17,11 @@ const App = () => {
         <Navbar />
         <div className="app-container">
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/thread/:threadId" element={<DetailThread />} />
+            <Route path="/" element={<LandingPage/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/forum" element={<Forum/>} />
+            <Route path="/thread/:threadId" element={<DetailThread/>} />
             <Route path="/leaderboard" component={Leaderboard} />
           </Routes>
         </div>

@@ -1,0 +1,76 @@
+/*------------------------------- halaman forum ---------------------------*/
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .filter-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .filter-button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .filter-button.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .thread-list {
+    margin-top: 20px;
+  }
+  
+  .thread-item {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .thread-item h3 {
+    margin-bottom: 10px;
+  }
+  
+  .thread-item p {
+    margin-bottom: 5px;
+  }
+  
+  .thread-creator {
+    display: flex;
+    align-items: center;
+  }
+  
+  .thread-creator p {
+    margin-right: 10px;
+  }
+  
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
