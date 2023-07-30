@@ -2,7 +2,7 @@ import { REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOU
 
 const initialState = {
   isLoggedIn: false,
-  user: null,
+  user: null, // Pastikan initialState memiliki properti 'user'
   token: null,
   error: null,
 };
@@ -24,14 +24,13 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        user: action.payload,
+        user: action.payload, // Pastikan menyimpan data user pada state
         token: action.payload,
         error: null,
       };
     case LOGIN_FAILURE:
       return {
         ...state,
-        isLoggedIn: false,
         token: null,
         error: action.payload,
       };
@@ -40,7 +39,6 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: false,
         user: null,
-        token: null,
       };
     default:
       return state;

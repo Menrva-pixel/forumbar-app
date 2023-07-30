@@ -1,19 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logoutUser } from '../store/actions/authActions';
+import logo from '../images/react-logo.png';
 
-const Navbar = ({ isAuthenticated, user }) => {
+const Navbar = ({ isAuthenticated, user, logoutUser }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logoutUser();
+    
+    navigate("/");
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-left">
-          <Link to="/" className="navbar-logo">My Forum</Link>
+          <Link to="/" className="navbar-logo"><img src={logo}></img></Link>
         </div>
         <ul className="navbar-menu">
-          {isAuthenticated ? (
+          {isAuthenticated && user ? (
             <>
               <li className="navbar-item">
-                <span className="navbar-link">Hello, {user.name}</span>
+                <Link to={`/profile/${user.id}`} className="navbar-link">Hello, {user.name}</Link>
               </li>
               <li className="nav-item">
                 <Link to="/forum" className="nav-links">
@@ -24,6 +34,11 @@ const Navbar = ({ isAuthenticated, user }) => {
                 <Link to="/leaderboard" className="nav-links">
                   Leaderboard
                 </Link>
+              </li>
+              <li className="nav-item">
+                <button className="navbar-link" onClick={handleLogout}>
+                  Logout
+                </button>
               </li>
             </>
           ) : (
@@ -50,4 +65,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user, 
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, { logoutUser })(Navbar);

@@ -4,13 +4,15 @@ import { loginUser } from '../../store/actions/authActions';
 import logo from '../../images/logo.png';
 import Swal from 'sweetalert2';
 
-const Login = ({ loginUser }) => {
+const Login = ({ isAuthenticated, loginUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      await loginUser(email, password);
+      const token = await loginUser(email, password);
+      // Simpan token di local storage setelah login berhasil
+      localStorage.setItem('userToken', token);
       Swal.fire({
         icon: 'success',
         title: 'Login Success',
@@ -24,6 +26,7 @@ const Login = ({ loginUser }) => {
       });
     }
   };
+
 
   return (
     <div className="container">
@@ -50,4 +53,8 @@ const Login = ({ loginUser }) => {
   );
 };
 
-export default connect(null, { loginUser })(Login);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.token !== null,
+});
+
+export default connect(mapStateToProps, { loginUser })(Login);

@@ -1,12 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../index.css'; 
+import '../index.css';
+import infoImg from '../images/react-logo.png';
+import discussion from '../images/Discussion.png';
+import networking from '../images/Networking.png';
+import tutorial from '../images/Tutorial.png';
+
+const InfoSection = () => {
+  return (
+    <section className="info-section">
+      <div className="info-container">
+        <img src={infoImg} alt="React Logo" className="info-image" />
+        <div className="info-title">
+          <h2 className="info-section-title">About Us</h2>
+          <p className="info-section-description">
+            We provide a platform for programmers to share information and knowledge about Software Developer, 
+            Web Developer, Software Engineer, Networking, and Cybersecurity. All are welcome.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const LandingPage = () => {
+  useEffect(() => {
+    const handleParallax = () => {
+      const infoSection = document.querySelector('.info-section');
+      const scrollPosition = window.pageYOffset;
+      infoSection.style.backgroundPositionY = -scrollPosition * 0.5 + 'px';
+    };
+
+    window.addEventListener('scroll', handleParallax);
+
+    return () => {
+      window.removeEventListener('scroll', handleParallax);
+    };
+  }, []);
+
   return (
     <div className="landing-page">
       <header className="hero">
-        <h1 className="hero-title">Welcome to Our Forum</h1>
+        <h1 className="hero-title">Hi Coders! Welcome to ForumBar</h1>
         <p className="hero-description">Join the community and start discussing interesting topics!</p>
         <div className="cta-buttons">
           <Link to="/register" className="cta-button cta-button-register">
@@ -17,31 +52,36 @@ const LandingPage = () => {
           </Link>
         </div>
       </header>
+      <InfoSection />
 
-      {/* Additional Sections */}
-      <section className="py-16">
-        <div className="container">
-          <h2 className="section-title">About Us</h2>
-          <p className="section-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac mauris eu nisl dictum tincidunt. Nullam
-            congue nisi ac justo fermentum fermentum. Vestibulum gravida mi a augue tristique cursus. Suspendisse
-            potenti. Proin quis eros purus.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-100">
-        <div className="container">
+      {/* Service Section */}
+      <section>
+        <div className="service-container">
           <h2 className="section-title">Our Services</h2>
-          {/* Add service details here */}
+          <p className="section-description">Here are some of the services we provide to our community.</p>
+          <div className="service-list">
+            <div className="service-item">
+              <img src={discussion} alt="Discussion Forums Icon" />
+              <h3>Discussion Forums</h3>
+              <p>Engage in various programming discussions with other members.</p>
+            </div>
+            <div className="service-item">
+              <img src={tutorial} alt="Tutorials Icon" />
+              <h3>Tutorials</h3>
+              <p>Access a wide range of programming tutorials to enhance your skills.</p>
+            </div>
+            <div className="service-item">
+              <img src={networking} alt="Networking Icon" />
+              <h3>Networking</h3>
+              <p>Connect with fellow programmers and professionals in the industry.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Add more sections as needed */}
-      
       {/* Footer */}
       <footer className="footer">
-        <p>&copy; 2023 Your Website. All rights reserved.</p>
+        <p>&copy; 2023 ForumBar. All rights reserved.</p>
       </footer>
     </div>
   );

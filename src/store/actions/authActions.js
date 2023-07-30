@@ -21,7 +21,8 @@ export const registerUser = (name, email, password) => async (dispatch) => {
       email,
       password,
     });
-    dispatch(registerSuccess(response.data.data.user));
+    const { user } = response.data.data;
+    dispatch(registerSuccess(user));
     Swal.fire({
       icon: 'success',
       title: 'Registration Success',
@@ -37,7 +38,6 @@ export const registerUser = (name, email, password) => async (dispatch) => {
   }
 };
 
-// Login user action
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT = 'LOGOUT';
@@ -78,5 +78,20 @@ export const loginUser = (email, password) => async (dispatch) => {
       title: 'Login Failed',
       text: error.message,
     });
+  }
+};
+
+// Tambahkan action untuk logout user
+export const logoutUser = () => (dispatch) => {
+  try {
+    localStorage.removeItem('userToken');
+    dispatch(logout());
+    Swal.fire({
+      icon: 'info',
+      title: 'Logout Success',
+      text: 'You have successfully logged out.',
+    });
+  } catch (error) {
+    console.error('Failed to logout user:', error);
   }
 };
