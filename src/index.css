@@ -13,6 +13,7 @@ code {
     monospace;
 }
 
+
 /* -----------------------Navbar------------------------ */
 .navbar {
   background-color: #333; 
@@ -96,6 +97,12 @@ code {
 }
 
 /* ----------------------------Landing Page--------------------------*/
+
+.landing-page {
+  min-height: 100vh; 
+  padding-bottom: 60px; 
+  box-sizing: border-box; 
+}
 
 .hero {
   background-image: url('../src/images/banner.jpg');
@@ -577,11 +584,15 @@ p {
 /* --------------Footer-----------------*/
 .footer {
   background-color: #333;
-  margin: auto;
-  padding: 10px;
+  color: #fff;
+  padding: 20px 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  position: inherit;
+}
+
+.footer-content {
   display: flex;
   justify-content: center;
-  color: #f0f0f0;
-  font-size: 16px;
-  font-weight: 600;
 }

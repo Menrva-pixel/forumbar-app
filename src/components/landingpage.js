@@ -7,23 +7,6 @@ import discussion from '../images/Discussion.png';
 import networking from '../images/Networking.png';
 import tutorial from '../images/Tutorial.png';
 
-const InfoSection = () => {
-  return (
-    <section className="info-section">
-      <div className="info-container">
-        <img src={infoImg} alt="React Logo" className="info-image" />
-        <div className="info-title">
-          <h2 className="info-section-title">About Us</h2>
-          <p className="info-section-description">
-            We provide a platform for programmers to share information and knowledge about Software Developer, 
-            Web Developer, Software Engineer, Networking, and Cybersecurity. All are welcome.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const LandingPage = ({ isAuthenticated }) => {
   useEffect(() => {
     const handleParallax = () => {
@@ -57,7 +40,19 @@ const LandingPage = ({ isAuthenticated }) => {
         )}
         </div>
       </header>
-      <InfoSection />
+
+      <section className="info-section">
+        <div className="info-container">
+          <img src={infoImg} alt="React Logo" className="info-image" />
+          <div className="info-title">
+            <h2 className="info-section-title">About Us</h2>
+            <p className="info-section-description">
+            We provide a platform for programmers to share information and knowledge about Software Developer, 
+            Web Developer, Software Engineer, Networking, and Cybersecurity. All are welcome.
+          </p>
+          </div>
+        </div>
+      </section>
 
       {/* Service Section */}
       <section>
@@ -83,11 +78,6 @@ const LandingPage = ({ isAuthenticated }) => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2023 ForumBar. All rights reserved.</p>
-      </footer>
     </div>
   );
 };

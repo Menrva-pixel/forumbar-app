@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store/store';
 import Navbar from './components/navbar';
+import Footer from './components/Footer';
 import Login from './components/auth/login';
 import Register from './components/auth/register';
 import Forum from './components/forum/forum';
@@ -14,7 +15,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Navbar />
+        <Navbar/>
         <div className="app-container">
           <Routes>
             <Route path="/" element={<LandingPage/>} />
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/leaderboard" component={Leaderboard} />
           </Routes>
         </div>
+        <Footer/>
       </Router>
     </Provider>
   );
