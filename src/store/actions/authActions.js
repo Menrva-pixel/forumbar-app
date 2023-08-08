@@ -1,14 +1,6 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-export const checkLocalStorageToken = () => (dispatch) => {
-  const token = localStorage.getItem('userToken');
-  if (token) {
-    dispatch(loginSuccess(token));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  }
-};
-
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
 
@@ -70,18 +62,15 @@ export const loginUser = (email, password) => async (dispatch) => {
       email,
       password,
     });
-
     const { token } = response.data.data;
     dispatch(loginSuccess(token));
     
-    sessionStorage.setItem('userToken', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    localStorage.setItem('userToken', token);
     Swal.fire({
       icon: 'success',
       title: 'Login Success',
       text: 'You have successfully logged in.',
     });
-    return token;
   } catch (error) {
     dispatch(loginFailure(error.message));
     Swal.fire({
@@ -92,6 +81,7 @@ export const loginUser = (email, password) => async (dispatch) => {
   }
 };
 
+// Tambahkan action untuk logout user
 export const logoutUser = () => (dispatch) => {
   try {
     localStorage.removeItem('userToken');

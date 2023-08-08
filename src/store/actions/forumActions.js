@@ -1,15 +1,12 @@
 import axios from 'axios';
-import Swal from 'sweetalert2';
 
 const API_URL = 'https://forum-api.dicoding.dev/v1';
 
-// Action types for fetching threads
 export const FETCH_THREADS_SUCCESS = 'FETCH_THREADS_SUCCESS';
 export const FETCH_THREADS_FAILURE = 'FETCH_THREADS_FAILURE';
 export const ADD_THREAD_SUCCESS = 'ADD_THREAD_SUCCESS';
 export const ADD_THREAD_FAILURE = 'ADD_THREAD_FAILURE';
 
-// Action creators for fetching threads
 export const fetchThreadsSuccess = (threads) => ({
   type: FETCH_THREADS_SUCCESS,
   payload: threads,
@@ -30,30 +27,32 @@ export const addThreadFailure = (error) => ({
   payload: error,
 });
 
-// Thunk for fetching threads
+// Thunk untuk mengambil data Threads
 export const fetchThreads = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${API_URL}/threads`);
+      const response = await axios.get('https://forum-api.dicoding.dev/v1/threads');
       const threads = response.data.data.threads;
-      dispatch(fetchThreadsSuccess(threads));
+      dispatch({ type: FETCH_THREADS_SUCCESS, payload: threads });
     } catch (error) {
-      dispatch(fetchThreadsFailure(error.message));
+      dispatch({ type: FETCH_THREADS_FAILURE, payload: error.message });
     }
   };
 };
 
-// Thunk for adding thread
+// Thunk untuk mebambahkanThread
 export const addThread = (thread) => {
   return { type: ADD_THREAD_SUCCESS, payload: thread };
 };
 
-// Action types and creators for voting
+
+// Action untuk Vote
 export const VOTE_THREAD_SUCCESS = 'VOTE_THREAD_SUCCESS';
 export const VOTE_THREAD_FAILURE = 'VOTE_THREAD_FAILURE';
 export const VOTE_COMMENT_SUCCESS = 'VOTE_COMMENT_SUCCESS';
 export const VOTE_COMMENT_FAILURE = 'VOTE_COMMENT_FAILURE';
 
+// Action Creator untuk Vote
 export const voteThreadSuccess = (threadId, votes) => ({
   type: VOTE_THREAD_SUCCESS,
   payload: { threadId, votes },
@@ -74,49 +73,30 @@ export const voteCommentFailure = (error) => ({
   payload: error,
 });
 
-// Thunk for voting thread
-export const voteThread = (threadId, voteType) => async (dispatch, getState) => {
+// Thunk untuk Vote Thread
+export const voteThread = (threadId, voteType) => async (dispatch) => {
   try {
-    const token = getState().auth.token;
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const response = await axios.post(`${API_URL}/threads/${threadId}/votes`, { voteType }, { headers });
+    const response = await axios.post(`${API_URL}/threads/${threadId}/votes`, { voteType });
     dispatch(voteThreadSuccess(threadId, response.data.data.votes));
   } catch (error) {
     dispatch(voteThreadFailure(error.message));
   }
 };
 
-// Thunk for voting comment
-export const voteComment = (commentId, voteType) => async (dispatch, getState) => {
+// Thunk untuk Vote Comment
+export const voteComment = (commentId, voteType) => async (dispatch) => {
   try {
-    const token = getState().auth.token;
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const response = await axios.post(`${API_URL}/comments/${commentId}/votes`, { voteType }, { headers });
+    const response = await axios.post(`${API_URL}/comments/${commentId}/votes`, { voteType });
     dispatch(voteCommentSuccess(commentId, response.data.data.votes));
   } catch (error) {
     dispatch(voteCommentFailure(error.message));
   }
 };
 
-// Action type and creator for setting filter
+// Action untuk filter
 export const SET_FILTER = 'SET_FILTER';
 
 export const setFilter = (category) => ({
   type: SET_FILTER,
   payload: category,
 });
-
-// ... (other actions if any)
-
-// Export all action creators
-export default {
-  fetchThreads,
-  addThread,
-  voteThread,
-  voteComment,
-  setFilter,
-};

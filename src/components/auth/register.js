@@ -15,12 +15,14 @@ const Register = ({ isAuthenticated, registerUser }) => {
     try {
       await registerUser(name, email, password);
       setIsRegistered(true);
+      // Tampilkan SweetAlert2 ketika registrasi berhasil
       Swal.fire({
         icon: 'success',
         title: 'Registration Success',
         text: 'You have successfully registered.',
       });
     } catch (error) {
+      // Tampilkan SweetAlert2 ketika registrasi gagal
       Swal.fire({
         icon: 'error',
         title: 'Registration Failed',
@@ -30,6 +32,7 @@ const Register = ({ isAuthenticated, registerUser }) => {
   };
 
   if (isAuthenticated) {
+    // If the user is already authenticated, redirect to the homepage
     return <Navigate to="/" />;
   }
 

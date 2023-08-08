@@ -1,13 +1,33 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import '../index.css';
 import infoImg from '../images/react-logo.png';
 import discussion from '../images/Discussion.png';
 import networking from '../images/Networking.png';
 import tutorial from '../images/Tutorial.png';
 
+<<<<<<< HEAD
 const LandingPage = ({ isAuthenticated }) => {
+=======
+const InfoSection = () => {
+  return (
+    <section className="info-section">
+      <div className="info-container">
+        <img src={infoImg} alt="React Logo" className="info-image" />
+        <div className="info-title">
+          <h2 className="info-section-title">About Us</h2>
+          <p className="info-section-description">
+            We provide a platform for programmers to share information and knowledge about Software Developer, 
+            Web Developer, Software Engineer, Networking, and Cybersecurity. All are welcome.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const LandingPage = () => {
+>>>>>>> parent of ceadc9e (update)
   useEffect(() => {
     const handleParallax = () => {
       const infoSection = document.querySelector('.info-section');
@@ -28,16 +48,12 @@ const LandingPage = ({ isAuthenticated }) => {
         <h1 className="hero-title">Hi Coders! Welcome to ForumBar</h1>
         <p className="hero-description">Join the community and start discussing interesting topics!</p>
         <div className="cta-buttons">
-        {!isAuthenticated && (
-          <>
           <Link to="/register" className="cta-button cta-button-register">
             Register
           </Link>
           <Link to="/login" className="cta-button cta-button-login">
             Login
           </Link>
-          </>
-        )}
         </div>
       </header>
 
@@ -82,8 +98,4 @@ const LandingPage = ({ isAuthenticated }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.token !== null,
-});
-
-export default connect(mapStateToProps)(LandingPage);
+export default LandingPage;
